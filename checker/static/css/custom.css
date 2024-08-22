@@ -1,0 +1,84 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: initial;
+  letter-spacing: normal;
+}
+
+body {
+  letter-spacing: normal;
+}
+
+#custom-textarea {
+  border: 1px solid #ccc;
+  padding: 5px;
+  min-height: 100px;
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: auto;
+  font-size: 16px;
+}
+.correct:hover {
+  background-color: red;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.correct {
+  text-decoration: underline red;
+}
+
+u {
+  text-decoration: none;
+}
+
+.text-container {
+  position: relative;
+}
+
+#hover-text {
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  display: none;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 0px;
+  z-index: 100;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown ul {
+  text-align: left;
+  list-style-type: none;
+  padding: 0;
+}
+
+.dropdown li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.text-container:hover .dropdown {
+  display: block;
+}
+body:not(.text-container) {
+  position: relative;
+}
+
+.dropdown-below {
+  top: 100%;
+}
+.radio-input{
+    border: none;
+    width: fit-content;
+}
+.radio-input:hover{
+    background-color: #ccc;
+}

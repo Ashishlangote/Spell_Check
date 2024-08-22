@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spell Checker</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/bootstrap.min.css'%}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/custom.css'%}"
+    />
+  </head>
+
+  <body>
+    <form method="POST" id="custom-form">
+      {% csrf_token %}
+      <div class="m-5 d-flex">
+        <div class="w-50" style="margin-right: 200px">
+          <div class="mb-4">
+            <h1>Spell Checker</h1>
+          </div>
+          <div class="form-group">
+            <label for="language" class="col-form-label"
+              >Please select a language</label
+            >
+            <select
+              class="custom-select w-75"
+              name="language"
+              style="font-size: 13px"
+            >
+              <option value="en_US">English US</option>
+              <option value="en_GB">English Great-Britain</option>
+              <option value="en_CA">English Canada</option>
+              <option value="en_ZA">English South-African</option>
+              <option value="en_AU">English Australian</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="custom-textarea">Input Here</label>
+            {% if suggestions %}
+            <p class="text-success">Suggestions Found</p>
+            {% elif message %}
+            <p>{{ message }}</p>
+            {% else %}
+            <p class="text-danger">No suggestions found.</p>
+            {% endif %}
+            <div class="textarea-wrapper">
+              <input
+                type="hidden"
+                name="custom-textarea-content"
+                id="custom-textarea-content"
+              />
+              <div
+                class="form-control p-2"
+                id="custom-textarea"
+                contenteditable="true"
+              >
+                {% if suggestions %}
+                <div class="text-container">
+                  <span id="hover-text" class="correct"
+                    >{{corrected_text}}</span
+                  >
+                  <div class="dropdown" contenteditable="false">
+                    {% for words in suggestions %}
+                    <ul>
+                      <li>
+                        <input
+                          type="submit"
+                          class="radio-input"
+                          name="optionsRadios"
+                          value="{{words}}"
+                        />
+                      </li>
+                    </ul>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-info">Check</button>
+        </div>
+      </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      const editableDiv = document.getElementById("custom-textarea");
+      const hiddenInput = document.getElementById("custom-textarea-content");
+
+      // Function to sanitize and set the hidden input value
+      function updateHiddenInput() {
+        const content = editableDiv.innerText; // Use innerText to get text content without HTML tags
+        hiddenInput.value = content.trim(); // Remove leading/trailing whitespace
+      }
+
+      // Listen for input and update the hidden input
+      editableDiv.addEventListener("input", function () {
+        updateHiddenInput();
+      });
+
+      // Initial update of the hidden input
+      updateHiddenInput();
+      const textContainer = document.querySelector(".text-container");
+      const dropdown = document.querySelector(".dropdown");
+      let timeout;
+
+      textContainer.addEventListener("mouseover", () => {
+        clearTimeout(timeout); // Clear any previously set timeouts
+        dropdown.style.display = "block";
+      });
+
+      textContainer.addEventListener("mouseout", () => {
+        timeout = setTimeout(() => {
+          dropdown.style.display = "none";
+        }, 250); // Adjust the delay (in milliseconds) as needed
+      });
+
+      // Optional: Close dropdown when clicking outside of it
+      document.addEventListener("click", (event) => {
+        if (
+          !textContainer.contains(event.target) &&
+          event.target !== textContainer
+        ) {
+          dropdown.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
